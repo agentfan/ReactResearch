@@ -1,0 +1,112 @@
+
+.App {
+  max-width: 1200px;
+  min-width: 800px;
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+}
+
+.App h1 {
+  color: brown;
+  font-size: 1.5rem;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+.App form.formAddItem {
+  width: 400px;
+  margin: 0 auto;
+}
+
+.App form.formAddItem div.title {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  color: grey;
+}
+
+.App form.formAddItem div.error {
+  display: none;
+  margin: 0;
+  padding: 0;
+  color: brown;
+}
+
+.App form.formAddItem div.error.active {
+  display: block;
+}
+
+.App form.formAddItem div.input {
+  margin: 0;
+  padding: 0;
+}
+
+.App form.formAddItem input.value {
+  width: calc(100% - 1rem);
+  font-size: 1rem;
+  margin: 0;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.5rem 0.1rem;
+  border: none;
+  border-bottom: 1px solid rgb(197, 197, 197);
+  background-color: rgb(245, 245, 245);
+}
+
+.App form.formAddItem input.button {
+  width: 100%;
+  border-radius: 0.25rem;
+  border: 1px solid rgb(197, 197, 197);
+  padding: 0.5rem;
+}
+
+.App form.formAddItem input.button:hover {
+  background-color: rgb(245, 191, 191);
+}
+
+.App .table {
+  width: 600px;
+  margin: 1rem auto;
+  border-top: 1px solid grey;
+  border-left: 1px solid grey;
+}
+
+.App .table .row {
+  display: grid;
+  grid-template-columns: 40px 2fr 1fr 1fr 1fr;
+}
+
+.App .id {
+  padding: 0.25rem 0.5rem;
+  border-bottom: 1px solid grey;
+  border-right: 1px solid grey;
+  text-align: center;
+}
+
+.App .name {
+  text-align: left;
+  padding: 0.25rem 1rem;
+  border-bottom: 1px solid grey;
+  border-right: 1px solid grey;
+}
+
+.App .price {
+  padding: 0.25rem 1rem;
+  border-bottom: 1px solid grey;
+  border-right: 1px solid grey;
+  text-align: right;  
+}
+.App .ammount {
+  padding: 0.25rem 1rem;
+  border-bottom: 1px solid grey;
+  border-right: 1px solid grey;
+  text-align: right;  
+}
+
+.App .cost {
+  padding: 0.25rem 1rem;
+  border-bottom: 1px solid grey;
+  border-right: 1px solid grey;
+  text-align: right;  
+}
