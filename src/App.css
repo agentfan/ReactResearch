@@ -83,7 +83,7 @@
 .App .table .header {
   display: grid;
   text-align: center;
-  grid-template-columns: 40px 2fr 1fr 1fr 1fr 40px;
+  grid-template-columns: 40px 3fr 2fr 2fr 2fr 40px;
   font-weight: bold;
   background-color: rgb(252, 198, 198);
 }
@@ -97,7 +97,12 @@
 
 .App .table .row {
   display: grid;
-  grid-template-columns: 40px 2fr 1fr 1fr 1fr 40px;
+  grid-template-columns: 40px 3fr 2fr 2fr 2fr 40px;
+}
+
+.App .table .row > * {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .App .table .row:hover {

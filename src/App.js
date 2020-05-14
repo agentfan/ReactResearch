@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import './App.css';
-import './public/del.svg';
 
 const theGoods = [
   {
@@ -209,7 +208,7 @@ class Row extends Component {
     this.prn.selected(this.id, e);
   }
 
-  onDelete = () => { this.prn.del(this.id)}
+  onDelete = (e) => { this.prn.del(this.id); e.stopPropagation();}
 
   get id() {return this.state.id;}
 
@@ -285,7 +284,7 @@ class Table extends Component {
   del(id) {
     if(this.rows.get(id)) {
       this.rows.delete(id);
-      let i = this.state.goods.findIndex(item=>item.id === id);
+      let i = this.state.goods.findIndex(item => item.id === id);
       this.state.goods.splice(i,1);
       this.setState({goods: this.state.goods});
     }
@@ -321,6 +320,7 @@ class Table extends Component {
   }
 
   sortByName = () => {
+    console.log("sort by name");
     if(this.sort.name) {
       this.state.goods.sort((a,b) => {
         if(a.name < b.name) return -1;
@@ -340,6 +340,7 @@ class Table extends Component {
   }
 
   sortByPrice = () => {
+    console.log("sort by price");
     if(this.sort.price) this.state.goods.sort((a,b) => a.price - b.price);
     else this.state.goods.sort((a,b) => b.price - a.price);
     this.sort.price = !this.sort.price;
@@ -347,6 +348,7 @@ class Table extends Component {
   }
 
   sortByAmmount = () => {
+    console.log("sort by ammount");
     if(this.sort.ammount) this.state.goods.sort((a,b) => a.ammount - b.ammount);
     else this.state.goods.sort((a,b) => b.ammount - a.ammount);
     this.sort.ammount = !this.sort.ammount;
@@ -354,6 +356,7 @@ class Table extends Component {
   }
 
   sortByCost = () => {
+    console.log("sort by cost");
     if(this.sort.cost) this.state.goods.sort((a,b) => a.price*a.ammount - b.price*b.ammount);
     else this.state.goods.sort((a,b) => b.price*b.ammount - a.price*a.ammount);
     this.sort.cost = !this.sort.cost;
