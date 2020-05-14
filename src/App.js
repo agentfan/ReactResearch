@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
+import './public/del.svg';
 
 const theGoods = [
   {
@@ -42,7 +43,6 @@ class EditForm extends Component {
     this.prn.form = this;
     this.row = null;
     this.state = {
-      action: "add",
       name: "",
       price: 0,
       ammount: 0,
@@ -56,7 +56,6 @@ class EditForm extends Component {
     this.row = row;
     if(row !== null) {
       this.setState({
-        action: "save",
         name: row.name,
         price: row.price,
         ammount: row.ammount
@@ -64,7 +63,6 @@ class EditForm extends Component {
     }
     else {
       this.setState({
-        action: "add",
         name: "new item",
         price: 0,
         ammount: 0
@@ -72,7 +70,7 @@ class EditForm extends Component {
     }
   }
 
-  action = () => {
+  action = (mode) => {
     console.log(this.form);
     let name = this.form.current.name.value;
     let price = parseFloat(this.form.current.price.value);
@@ -101,11 +99,18 @@ class EditForm extends Component {
       });
     }
     if(!error) {
-      if(this.state.action === "add") this.prn.add(name, price, ammount);
+      if(this.row === null) {
+        this.prn.add(name, price, ammount);
+      }
       else {
-        this.row.name = name;
-        this.row.price = price;
-        this.row.ammount = ammount;
+        if(mode === "add") {
+          this.prn.add(name, price, ammount);
+        }
+        else {
+          this.row.name = name;
+          this.row.price = price;
+          this.row.ammount = ammount;
+        }
       }
     }
   }
@@ -152,8 +157,9 @@ class EditForm extends Component {
         <div className="input">
           <input className="value" name="ammount" type="number" value={this.state.ammount} onChange={this.onAmmountChanged}/>
         </div>
-        <div className="input">
-          <input className="button" type="button" value={this.state.action} onClick={this.action}/>
+        <div className="button">
+          <input className="button" type="button" value="Save" onClick={()=>this.action("save")}/>
+          <input className="button" type="button" value="Add new item" onClick={()=>this.action("add")}/>
         </div>
       </form>
     );
@@ -200,16 +206,10 @@ class Row extends Component {
   }
 
   onClick = (e) => {
-    if(e.altKey) {
-      this.prn.del(this.state.id);
-      return;
-    }
-    if(e.ctrlKey) {
-      this.active = !this.active;
-      return;
-    }
-    this.prn.selected(this.id);
+    this.prn.selected(this.id, e);
   }
+
+  onDelete = () => { this.prn.del(this.id)}
 
   get id() {return this.state.id;}
 
@@ -243,6 +243,7 @@ class Row extends Component {
         <Row.Price value={this.state.price}/>
         <Row.Ammount value={this.state.ammount}/>
         <Row.Cost value={this.state.cost}/>
+        <div className="delete"><img src="/del.svg" onClick={this.onDelete}></img></div>
       </div>
     );
   }
@@ -255,6 +256,14 @@ class Table extends Component {
     this.prn.table = this;
     this.ID = 0;
     this.rows = new Map();
+    this.sel = null;
+    this.sort = {
+      id: false,
+      name: false,
+      price: false,
+      ammount: false,
+      cost: false
+    }
     this.state = {
       goods: props.goods
     }
@@ -282,12 +291,21 @@ class Table extends Component {
     }
   }
 
-  selected(id) {
-    console.log("table selected!");
+  selected(id, e) {
     let row = this.rows.get(id);
-    console.log(row);
     if(row !== undefined) {
-      this.prn.selected(row)
+      if(this.sel != row) {
+        if(this.sel != null) {
+          this.sel.active = false;
+        }
+        this.sel = row;
+        row.active = true;
+      }
+      else {
+        this.sel = null;
+        row.active = false;
+      }
+      this.prn.selected(this.sel);
     }    
   }
 
@@ -295,10 +313,67 @@ class Table extends Component {
     this.rows.set(row.id, row);
   }
 
+  sortByID = () => {
+    if(this.sort.id) this.state.goods.sort((a,b) => a.id - b.id);
+    else this.state.goods.sort((a,b) => b.id - a.id);
+    this.sort.id = !this.sort.id;
+    this.setState({goods: this.state.goods});
+  }
+
+  sortByName = () => {
+    if(this.sort.name) {
+      this.state.goods.sort((a,b) => {
+        if(a.name < b.name) return -1;
+        if(a.name > b.name) return 1;
+        return 0;
+      });
+    }
+    else {
+      this.state.goods.sort((a,b) => {
+        if(a.name < b.name) return 1;
+        if(a.name > b.name) return -1;
+        return 0;
+      });
+    }
+    this.sort.name = !this.sort.name;
+    this.setState({goods: this.state.goods});
+  }
+
+  sortByPrice = () => {
+    if(this.sort.price) this.state.goods.sort((a,b) => a.price - b.price);
+    else this.state.goods.sort((a,b) => b.price - a.price);
+    this.sort.price = !this.sort.price;
+    this.setState({goods: this.state.goods});
+  }
+
+  sortByAmmount = () => {
+    if(this.sort.ammount) this.state.goods.sort((a,b) => a.ammount - b.ammount);
+    else this.state.goods.sort((a,b) => b.ammount - a.ammount);
+    this.sort.ammount = !this.sort.ammount;
+    this.setState({goods: this.state.goods});
+  }
+
+  sortByCost = () => {
+    if(this.sort.cost) this.state.goods.sort((a,b) => a.price*a.ammount - b.price*b.ammount);
+    else this.state.goods.sort((a,b) => b.price*b.ammount - a.price*a.ammount);
+    this.sort.cost = !this.sort.cost;
+    this.setState({goods: this.state.goods});
+  }
+
   render() {
     return (
       <div className="table">
-        {this.state.goods.map((item) => {return <Row key={item.id} item={item} prn={this}/>;})}
+        <div className="header">
+          <div onClick={this.sortByID}>№</div>
+          <div onClick={this.sortByName}>Name</div>
+          <div onClick={this.sortByPrice}>Price</div>
+          <div onClick={this.sortByAmmount}>Ammount</div>
+          <div onClick={this.sortByCost}>Cost</div>
+          <div></div>
+        </div>
+        <div className="body">
+          {this.state.goods.map((item) => {return <Row key={item.id} item={item} prn={this}/>;})}
+        </div>
       </div>
     );
   }
@@ -317,7 +392,6 @@ class App extends Component {
   }
 
   selected(row) {
-    console.log("App selected:" + `${row.name}, ${row.price}, ${row.ammount}`);
     this._form.load(row);
   }
 

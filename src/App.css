@@ -54,8 +54,16 @@
   background-color: rgb(245, 245, 245);
 }
 
+.App form.formAddItem div.button {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  color: grey;
+}
+
 .App form.formAddItem input.button {
-  width: 100%;
+  width: 48%;
   border-radius: 0.25rem;
   border: 1px solid rgb(197, 197, 197);
   padding: 0.5rem;
@@ -72,9 +80,28 @@
   border-left: 1px solid grey;
 }
 
+.App .table .header {
+  display: grid;
+  text-align: center;
+  grid-template-columns: 40px 2fr 1fr 1fr 1fr 40px;
+  font-weight: bold;
+  background-color: rgb(252, 198, 198);
+}
+
+.App .table .header * {
+  padding: 0.25rem 0.5rem;
+  border-bottom: 1px solid grey;
+  border-right: 1px solid grey;
+}
+
+
 .App .table .row {
   display: grid;
-  grid-template-columns: 40px 2fr 1fr 1fr 1fr;
+  grid-template-columns: 40px 2fr 1fr 1fr 1fr 40px;
+}
+
+.App .table .row:hover {
+  background-color: rgb(248, 234, 217);
 }
 
 .App .table .row.active {
@@ -114,4 +141,31 @@
   border-bottom: 1px solid grey;
   border-right: 1px solid grey;
   text-align: right;  
+}
+
+.App .delete {
+  position: relative;
+  border-bottom: 1px solid grey;
+  border-right: 1px solid grey;
+}
+
+.App .delete img {
+  height: calc(100% - 0.5rem);
+  top: 0.25rem;
+  left: 50%;
+  width: auto;
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+.App .active .delete img {
+  filter: invert(100%);
+}
+
+.App .delete img:hover {
+  box-shadow: 0 0 0.5rem brown;
+}
+
+.App .active .delete img:hover {
+  box-shadow: 0 0 0.5rem black;
 }
